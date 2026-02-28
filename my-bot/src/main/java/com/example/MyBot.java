@@ -23,7 +23,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 public class MyBot extends TelegramLongPollingBot {
 
     private DatabaseManager db = new DatabaseManager();
- //   public Card card = new Card(getBotUsername(), 0, getBaseUrl());
+ 
 
     @Override
     public String getBotUsername() {
@@ -33,10 +33,8 @@ public class MyBot extends TelegramLongPollingBot {
     @Override
     public String getBotToken() {
 
-        // Загружаем файл .env
     Dotenv dotenv = Dotenv.load();
     
-    // Берем значение по ключу "BOT_TOKEN"
     String token = dotenv.get("BOT_TOKEN");
     
     // Проверка на случай, если забыл создать файл
@@ -61,6 +59,9 @@ public void onUpdateReceived(Update update) {
 
 
 private void handleText(Message message) {
+
+TelegramUtils utils = new TelegramUtils();
+
     String text = message.getText();
     String user = message.getFrom().getFirstName();
     long chatId = message.getChatId();
@@ -88,7 +89,7 @@ private void handleText(Message message) {
     }
 }
 
-
+/* 
     if (text.equals(BotCommands.START_COMMAND)) {
         SendMessage sm = new SendMessage();
         sm.setChatId(String.valueOf(chatId));
@@ -97,7 +98,41 @@ private void handleText(Message message) {
         
         try { execute(sm); } catch (Exception e) { e.printStackTrace(); }
     }
+*/
+
+
+
+switch (text) {
+
+
+
+
+
+    case BotCommands.START_COMMAND:
+        sendMsgKybrd(chatId, "halo, " + user + "! Добро пожаловать в EverCards! Выберите действие:", utils.getMainKeyboard());
+        break;
+
+    case "Menu":
+        sendMsgKybrd(chatId, "Вот наше меню:", utils.createMainMenu());
+        break;
+
+    case "Корзина":
+        
+        break;
+
+    case "Stop":
+        sendMsg(chatId, "Бот остановлен. Напиши /start чтобы вернуться");
+        break;
+
+    default:
+        sendMsgKybrd(chatId, "Я не понимаю эту команду", utils.getMainKeyboard());
 }
+
+
+}
+
+
+
 
 private void handleCallback(CallbackQuery query) {
     String data = query.getData();
@@ -170,13 +205,18 @@ private void sendCard(long chatId, Card card) {
 }
 
 
-// Вспомогательный метод для быстрой отправки текста
+
 private void sendMsg(long chatId, String text) {
     SendMessage sm = new SendMessage();
     sm.setChatId(String.valueOf(chatId));
     sm.setText(text);
     try { execute(sm); } catch (Exception e) { e.printStackTrace(); }
 }
-
-    // Главный метод, который запускает бота
+private void sendMsgKybrd(long chatId, String text , InlineKeyboardMarkup markup) {
+    SendMessage sm = new SendMessage();
+    sm.setChatId(String.valueOf(chatId));
+    sm.setText(text);
+    sm.setReplyMarkup(markup);
+    try { execute(sm); } catch (Exception e) { e.printStackTrace(); }
+}
 }
