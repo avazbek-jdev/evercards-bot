@@ -44,8 +44,6 @@ public class MyBot extends TelegramLongPollingBot {
     
     return token;
 
-
-       // return "5167467929:AAHe4WTC_nXgrTdpeIqkdjJ8eVHRK0TAw20"; 
     }
 
     @Override
