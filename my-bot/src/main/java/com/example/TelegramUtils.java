@@ -8,6 +8,8 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.smartcardio.Card;
+
 public class TelegramUtils {
     public static InlineKeyboardMarkup createMainMenu() {
         InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
@@ -70,6 +72,36 @@ public class TelegramUtils {
 
         return markup;
     }
+
+    public static InlineKeyboardMarkup getNavigationKeyboard(int index, int totalSize) {
+    InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
+    List<List<InlineKeyboardButton>> rows = new ArrayList<>();
+    List<InlineKeyboardButton> row = new ArrayList<>();
+
+    // Кнопка Влево (индекс - 1)
+    InlineKeyboardButton leftBtn = new InlineKeyboardButton();
+    leftBtn.setText("⬅️");
+    leftBtn.setCallbackData("nav_" + ((index - 1 + totalSize) % totalSize)); // Зацикливаем поиск
+
+    // Кнопка Купить
+    InlineKeyboardButton buyBtn = new InlineKeyboardButton();
+    buyBtn.setText("💰 Купить");
+    buyBtn.setCallbackData("buy_" + index);
+
+    // Кнопка Вправо (индекс + 1)
+    InlineKeyboardButton rightBtn = new InlineKeyboardButton();
+    rightBtn.setText("➡️");
+    rightBtn.setCallbackData("nav_" + ((index + 1) % totalSize)); // Зацикливаем поиск
+
+    row.add(leftBtn);
+    row.add(buyBtn);
+    row.add(rightBtn);
+    rows.add(row);
+    
+    markup.setKeyboard(rows);
+    return markup;
+}
+
 
 
 }

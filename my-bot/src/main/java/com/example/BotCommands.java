@@ -15,5 +15,11 @@ public class BotCommands {
     public static final String BACK = "🔙 Назад";
     public static final String toShop = "к покупкам";
     public static final String showProfile = "профиль";
+    public static final String HELP_TEXT = "Привет! Я бот для управления коллекцией карточек. Вот что я умею:\n\n" +
+            "1. 🗂 Посмотреть карточки - открыть каталог с карточками.\n" +
+            "2. 🆘 Помощь - показать это сообщение.\n\n" +
+            "В каталоге вы можете листать карточки и нажимать 'Купить', чтобы узнать больше о каждой из них.";
+
+    public static final String ALL_CARDS = "/allcards";
     
 }

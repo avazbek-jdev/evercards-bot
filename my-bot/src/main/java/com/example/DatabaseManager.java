@@ -6,6 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseManager {
+
+
+    
+
+
     private static final String URL = "jdbc:sqlite:evercards.db";
 
     public DatabaseManager() {
@@ -40,7 +45,7 @@ public class DatabaseManager {
     }
 
     // Метод для получения всех карточек из базы
-    public List<Card> getAllCards() {
+   /*  public List<Card> getAllCards() {
         List<Card> cards = new ArrayList<>();
         String sql = "SELECT * FROM cards";
         try (Connection conn = DriverManager.getConnection(URL);
@@ -59,4 +64,23 @@ public class DatabaseManager {
         }
         return cards;
     }
+*/
+
+public List<Card> getAllCards() {
+    List<Card> cards = new ArrayList<>();
+    String sql = "SELECT * FROM cards";
+    try (Connection conn = this.connect();
+         Statement stmt = conn.createStatement();
+         ResultSet rs = stmt.executeQuery(sql)) {
+        while (rs.next()) {
+            cards.add(new Card(rs.getString("name"), rs.getDouble("price"), 
+                               rs.getString("description"), rs.getString("image_url")));
+        }
+    } catch (SQLException e) {
+        System.out.println(e.getMessage());
+    }
+    return cards;
+}
+
+    
 }
